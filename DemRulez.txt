@@ -1,0 +1,21 @@
+
+	*********************************
+	*-------WATCHBALL RULES	-------	*
+	*********************************
+
+WatchBall is a game about accuracy. It's the ultimate mix of football and timing!!! ...Anyways,
+to win you must score more goals than your opponent in the given time. The game is turn-based,
+in each turn you must try to stop the time at one of the following:
+
+1- .00 => GOAL!
+2- .99 OR .01 => Penalty
+	2b. Even number => GOAL!
+	2c. Odd number => Dude... you missed
+
+- Each round a couple of random numbers will be generated, if you stop in one of those you will recieve a red
+  card and your opponent will have two consecutive turns.
+
+	· RED CARD: you will recieve a red card and your opponent will have two consecutive turns until the end 
+		of th game.
+	· 
+- 
