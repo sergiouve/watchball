@@ -9,7 +9,7 @@ html, body {
     background-image: url(../images/grass.png);
 }
 
-a {
+.option {
     color: #000;
     font-size: 30px;
 }
@@ -28,12 +28,14 @@ header {
 
 #player1 {
     float: left; 
-    margin-left: 50px;  
+    margin-left: 50px;
+    color: #ff0000;
 }
 
 #player2 {
     float: right;  
-    margin-right: 50px; 
+    margin-right: 50px;
+    color: #1400FF;
 }
 
 #timer {
@@ -62,4 +64,24 @@ header {
     width: 300px;
     margin: auto;
     text-align: center;
+    margin-bottom: 30px;
+}
+
+#scoreboard {
+    height: 350px;
+    width: 550px;
+    background-color: #000;
+    margin: auto;
+    text-align: center;
+    color: #FFF;
+    font-size: 40px;
+    line-height: 350px;
+
+    /* Makes the text non-selectable */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
