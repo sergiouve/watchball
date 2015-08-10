@@ -173,7 +173,7 @@ function checkTimer() {
         if((dispHundSeconds >= 95 && dispHundSeconds != 99 || dispHundSeconds <= 5 && dispHundSeconds != 1) && dispHundSeconds != 0) {
             showMessage('foul');
             state = 'foul';
-            foul_number = parseInt(Math.random() * 10);
+            foul_number = Math.floor((Math.random() * 10) + 20);
 
             if(debug)
                 console.log(foul_number);
@@ -197,8 +197,9 @@ function checkTimer() {
         state = 'normal';
 
     } else if(state == 'foul') {
-
-        if(dispHundSeconds >= foul_number && dispHundSeconds <= (foul_number + Math.floor((Math.random() * 70) + 1))) {
+        var max_number = Math.floor((Math.random() * 70) + 30);
+        
+        if(dispHundSeconds >= foul_number && dispHundSeconds <= max_ number) {
             showMessage('goal');
             if(player1) {
                 score1++;
