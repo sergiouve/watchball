@@ -4,6 +4,9 @@
  * - Implement max time per turn                        *
  * - Animations                                         *
  * - Show stats in endGame                              *
+ * - Is the runnig var even being used ??               *
+ * - Add the rules in some div somewhere                *
+ * - Control flow of the scoreboard                     *
  ********************************************************/
 
 /********************************************************
@@ -22,7 +25,7 @@ for (var i = 0; i < options.length; ++i) {
     option.addEventListener('click', newGame(option.value), false);
 }*/
 
-/* DO YOU WANNA DEBUG BITCH? */
+/* DO YOU WANNA DEBUG BABY? */
 var debug = true;
 
 /*Some variables */
@@ -37,6 +40,7 @@ var aux_fuck = document.getElementById('aux_fuck');
 var htmlscore1 = document.getElementById('score1');
 var htmlscore2 = document.getElementById('score2');
 var start_btn = document.getElementById('start');
+var scoreboard = document.getElementById('scoreboard');
 
 /* Game variables */
 running = false;
@@ -45,6 +49,8 @@ var dispHundSeconds = 0;
 var player1 = true;
 var state = 'normal';
 var max_time;
+var foul_number;
+var max_number;
 
 var score1 = 0; 
 var score2 = 0;
@@ -60,10 +66,10 @@ game2.addEventListener('click', function() { newGame(12000) }, false);
 
 function newGame(time) {
     max_time = time;
-    
+
     if(debug)
         console.log(time);
-    
+
     if(time == 3000) {
         game30.style.color = '#909090';
         game1.style.color = '#000';
@@ -77,7 +83,7 @@ function newGame(time) {
         game1.style.color = '#000';
         game2.style.color = '#909090';
     }
-    
+
     /* Key Listeners */
     window.onkeyup = function(e) {
         var key = e.keyCode ? e.keyCode : e.which;
@@ -90,7 +96,7 @@ function newGame(time) {
         }
     }
 
-    document.getElementById('scoreboard').onclick = function() {
+    scoreboard.onclick = function() {
         if(running)
             stop();
         else
@@ -146,10 +152,11 @@ function stop() {
 
 function checkTimer() {
     if(debug)
-        console.log(dispHundSeconds + ' - ' + totalHundSeconds);
-    
+        console.log(dispHundSeconds + ' - ' + totalHundSeconds + ' - ' + state);
+
     if(state == 'normal') {
         if(dispHundSeconds == 0) {
+            showMessage('goal');
             if(player1) {
                 score1++;
                 htmlscore1.innerHTML = score1;      
@@ -158,12 +165,27 @@ function checkTimer() {
                 htmlscore2.innerHTML = score2;
             }
         }
+
         if(dispHundSeconds == 99 || dispHundSeconds == 1) {
-            alert('penalty');
+            showMessage('penalty');
             state = 'penalty';
         }
-    } else if(state = 'penalty') {
+
+        if((dispHundSeconds >= 95 && dispHundSeconds != 99 || dispHundSeconds <= 5 && dispHundSeconds != 1) && dispHundSeconds != 0) {
+            showMessage('foul');
+            state = 'foul';
+            foul_number = Math.floor((Math.random() * 10) + 20);
+            max_number = Math.floor((Math.random() * 70) + 30);
+            scoreboard.innerHTML += '<br>--> ' + foul_number + ' AND ' + max_number + ' <--';
+            
+            if(debug)
+                console.log(foul_number);
+        }
+
+    } else if(state == 'penalty') {
+
         if(dispHundSeconds % 2 == 0) {
+            showMessage('goal');
             if(player1) {
                 score1++;
                 htmlscore1.innerHTML = score1;      
@@ -171,12 +193,26 @@ function checkTimer() {
                 score2++;
                 htmlscore2.innerHTML = score2;
             }
+
         } else {
-            alert('You fat fuck, how could you miss?');
+            showMessage('missed');
         }
         state = 'normal';
-    } else if(state = 'foul') {
 
+    } else if(state == 'foul') {        
+        
+        if(dispHundSeconds >= foul_number && dispHundSeconds <= max_number) {
+            showMessage('goal');
+            if(player1) {
+                score1++;
+                htmlscore1.innerHTML = score1;      
+            } else {
+                score2++;
+                htmlscore2.innerHTML = score2;
+            }   
+        }
+
+        state = 'normal';
     }
 
     //RLLY?
@@ -193,7 +229,30 @@ function checkTimer() {
     }
 }
 
+function showMessage(type) {
+
+    if(type == 'penalty') {
+        scoreboard.innerHTML = 'PENALTY!';  
+    }
+
+    if(type == 'foul') {
+        scoreboard.innerHTML = 'FOUL!';
+    }
+
+    if(type == 'goal') {
+        scoreboard.innerHTML = 'GOOOOOOAL!';
+    }
+    
+    if(type == 'end') {
+     scoreboard.innerHTML = 'STOP BITCHES!';   
+    }
+    
+    if(type == 'missed') {
+        scoreboard.innerHTML = 'MISSED!';   
+    }
+}
+
 function endGame() {
     clearInterval(clock);
-    alert('STOP!');
+    showMessage('end');
 }
