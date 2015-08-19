@@ -51,6 +51,8 @@ var state = 'normal';
 var max_time;
 var foul_number;
 var max_number;
+var turnTime = 0;
+var endedTurn = false;
 
 var score1 = 0; 
 var score2 = 0;
@@ -115,6 +117,8 @@ function newGame(time) {
 
 function setTime() {
 
+    endedTurn = false;
+    ++turnTime;
     ++totalHundSeconds;
     dispHundSeconds = (totalHundSeconds % 100);
     dispSeconds = parseInt(totalHundSeconds / 100);
@@ -137,6 +141,12 @@ function setTime() {
 
     if(totalHundSeconds >= max_time)
         endGame();
+
+    if(turnTime >= 150) {
+        turnTime = 0;
+        endedTurn = true;
+        stop();
+    }
 }
 
 function start() {
@@ -155,35 +165,38 @@ function checkTimer() {
         console.log(dispHundSeconds + ' - ' + totalHundSeconds + ' - ' + state);
 
     if(state == 'normal') {
-        if(dispHundSeconds == 0) {
+        scoreboard.innerHTML = '';
+        if(dispHundSeconds == 0 && !endedTurn) {
             showMessage('goal');
+            turnTime = 0;
             if(player1) {
                 score1++;
-                htmlscore1.innerHTML = score1;      
+                htmlscore1.innerHTML = score1;     
             } else {
                 score2++;
                 htmlscore2.innerHTML = score2;
             }
         }
 
-        if(dispHundSeconds == 99 || dispHundSeconds == 1) {
+        if((dispHundSeconds == 99 || dispHundSeconds == 1) && !endedTurn)  {
             showMessage('penalty');
             state = 'penalty';
         }
 
-        if((dispHundSeconds >= 95 && dispHundSeconds != 99 || dispHundSeconds <= 5 && dispHundSeconds != 1) && dispHundSeconds != 0) {
+        if(((dispHundSeconds >= 95 && dispHundSeconds != 99 || dispHundSeconds <= 5 && dispHundSeconds != 1) && dispHundSeconds != 0) && !endedTurn) {
             showMessage('foul');
             state = 'foul';
             foul_number = Math.floor((Math.random() * 10) + 20);
             max_number = Math.floor((Math.random() * 70) + 30);
-            scoreboard.innerHTML += '<br>--> ' + foul_number + ' AND ' + max_number + ' <--';
-            
+            scoreboard.innerHTML += '<br>--> ' + foul_number + ' --- ' + max_number + ' <--';
+
             if(debug)
                 console.log(foul_number);
         }
 
     } else if(state == 'penalty') {
 
+        turnTime = 0;
         if(dispHundSeconds % 2 == 0) {
             showMessage('goal');
             if(player1) {
@@ -199,8 +212,9 @@ function checkTimer() {
         }
         state = 'normal';
 
-    } else if(state == 'foul') {        
-        
+    } else if(state == 'foul') {   
+            
+        turnTime = 0;
         if(dispHundSeconds >= foul_number && dispHundSeconds <= max_number) {
             showMessage('goal');
             if(player1) {
@@ -242,11 +256,11 @@ function showMessage(type) {
     if(type == 'goal') {
         scoreboard.innerHTML = 'GOOOOOOAL!';
     }
-    
+
     if(type == 'end') {
-     scoreboard.innerHTML = 'STOP BITCHES!';   
+        scoreboard.innerHTML = 'STOP BITCHES!';   
     }
-    
+
     if(type == 'missed') {
         scoreboard.innerHTML = 'MISSED!';   
     }
