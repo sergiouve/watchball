@@ -1,7 +1,9 @@
 # Watchball
 The ultimate mix of football and a watch!
 
-Did your child you ever play football with a watch? No?
+![](http://i.imgur.com/kPYy0E5.png)
+
+Did your child self ever play football with a watch? No?
 I'm not surprised, it's not a very exciting game, but here is
 is this HTML5 game to change that!
 
