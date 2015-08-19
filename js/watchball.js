@@ -50,6 +50,7 @@ var player1 = true;
 var state = 'normal';
 var max_time;
 var foul_number;
+var max_number;
 
 var score1 = 0; 
 var score2 = 0;
@@ -174,7 +175,9 @@ function checkTimer() {
             showMessage('foul');
             state = 'foul';
             foul_number = Math.floor((Math.random() * 10) + 20);
-
+            max_number = Math.floor((Math.random() * 70) + 30);
+            scoreboard.innerHTML += '<br>--> ' + foul_number + ' AND ' + max_number + ' <--';
+            
             if(debug)
                 console.log(foul_number);
         }
@@ -196,10 +199,9 @@ function checkTimer() {
         }
         state = 'normal';
 
-    } else if(state == 'foul') {
-        var max_number = Math.floor((Math.random() * 70) + 30);
+    } else if(state == 'foul') {        
         
-        if(dispHundSeconds >= foul_number && dispHundSeconds <= max_ number) {
+        if(dispHundSeconds >= foul_number && dispHundSeconds <= max_number) {
             showMessage('goal');
             if(player1) {
                 score1++;

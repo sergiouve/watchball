@@ -75,7 +75,8 @@ header {
     text-align: center;
     color: #FFF;
     font-size: 40px;
-    line-height: 350px;
+    margin-bottom: 50px;
+    line-height: 100px;
 
     /* Makes the text non-selectable */
     -webkit-touch-callout: none;
